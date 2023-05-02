@@ -79,6 +79,7 @@ class ReleaseCreator
         'package-lock.json',
         '.babelrc',
         'postcss.config.js',
+        '.php-cs-fixer.dist.php',
     ];
 
     /**

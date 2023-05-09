@@ -20,6 +20,17 @@ services:
       MYSQL_DATABASE: prestashop
     restart: unless-stopped
 
+  prestashop-dev:
+    build:
+      dockerfile: .docker/dev.Dockerfile
+      context: .
+    volumes:
+      - ./:/usr/src/myapp
+    environment:
+      PHP_IDE_CONFIG: serverName=docker
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   prestashop-git:
     hostname: ${PS_HOSTNAME:-localhost}
     build:

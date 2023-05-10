@@ -7,7 +7,10 @@ RUN apt-get update && apt-get install -y \
     git \
     zip \
     libxml2-dev \
-    unzip
+    default-mysql-client \
+    unzip \
+    apt-utils \
+    mailutils
 
 # install database driver
 RUN docker-php-ext-install pdo pdo_mysql dom zip gd intl fileinfo iconv
@@ -26,11 +29,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # install nodeJs
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt install -y nodejs
-
-# Install mailutils to make sendmail work
-RUN apt install -y \
-    apt-utils \
-    mailutils
 
 # install symfony cli
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash

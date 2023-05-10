@@ -2,6 +2,7 @@ FROM php:7.4-fpm
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    libjpeg-dev \
     libpng-dev \
     libzip-dev \
     git \
@@ -12,7 +13,10 @@ RUN apt-get update && apt-get install -y \
     apt-utils \
     mailutils
 
-# install database driver
+# configure driver
+RUN docker-php-ext-configure gd --with-jpeg
+
+# install driver
 RUN docker-php-ext-install pdo pdo_mysql dom zip gd intl fileinfo iconv
 
 # install xdebug

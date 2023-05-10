@@ -26,8 +26,16 @@ services:
       context: .
     volumes:
       - ./:/usr/src/myapp
+      - /tmp:/tmp
     environment:
       PHP_IDE_CONFIG: serverName=docker
+      DB_PASSWD: ${DB_PASSWD:-prestashop}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_SERVER: ${DB_SERVER:-mysql}
+      DB_PREFIX: ${DB_PREFIX:-ps_}
+      PS_DOMAIN: ${PS_DOMAIN:-localhost:8001}
+      PS_COUNTRY: ${PS_COUNTRY:-fr}
+      PS_LANGUAGE: ${PS_LANGUAGE:-en}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

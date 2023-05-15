@@ -24,8 +24,13 @@ services:
     build:
       dockerfile: .docker/dev.Dockerfile
       context: .
+      args:
+        - USER_ID=${USER_ID:-1000}
+        - GROUP_ID=${GROUP_ID:-1000}
+    ports:
+      - "8001:80"
     volumes:
-      - ./:/usr/src/myapp
+      - ./:/var/www/html
       - /tmp:/tmp
     environment:
       PHP_IDE_CONFIG: serverName=docker

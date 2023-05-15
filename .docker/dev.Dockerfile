@@ -1,4 +1,10 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm AS base
+
+ARG GROUP_ID
+ARG USER_ID
+
+RUN groupmod -g $GROUP_ID www-data \
+  && usermod -u $USER_ID -g $GROUP_ID www-data
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
@@ -38,4 +44,10 @@ RUN apt install -y nodejs
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt-get install -y symfony-cli
 
-WORKDIR /usr/src/myapp
+
+RUN mkdir -p /var/www/.npm
+RUN chown -R www-data:www-data /var/www/.npm
+RUN mkdir -p /var/www/.composer
+RUN chown -R www-data:www-data /var/www/.composer
+
+WORKDIR /var/www/html

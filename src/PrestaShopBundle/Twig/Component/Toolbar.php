@@ -37,27 +37,26 @@ class Toolbar
 {
     public bool $lockedToAllShopContext;
     public array $toolbarBtn;
-    public array|string $title;
+    public string $title;
+    public ?string $layoutTitle = null;
     public string $table;
     public bool|string $helpLink;
     public bool $enableSidebar;
     public int $currentTabLevel;
     public array $tabs;
-    public array $breadcrumbs;
+    public array $breadcrumbs = [];
     public bool $useRegularH1Structure = true;
 
     public function __construct(
         private readonly HookDispatcherInterface $hookDispatcher,
-        private readonly MenuBuilder $menuBuilder
+        private readonly MenuBuilder             $menuBuilder
     ) {
     }
 
     public function mount(): void
     {
         $tab = $this->menuBuilder->getCurrentTab();
-        if (null === $tab) {
-            $this->breadcrumbs = [];
-        } else {
+        if ($tab) {
             $tabs = [];
             $tabs[] = $tab;
             $ancestorsTab = $this->menuBuilder->getAncestorsTab($tab->getId());
@@ -67,6 +66,9 @@ class Toolbar
 
             $this->breadcrumbs = $this->menuBuilder->convertTabsToBreadcrumbLinks($tab, $ancestorsTab);
             $this->hookDispatcher->dispatchWithParameters('actionAdminBreadcrumbModifier', ['tabs' => $tabs, 'breadcrumb' => &$this->breadcrumbs]);
+            if (!$this->layoutTitle) {
+                $this->title = $this->menuBuilder->getToolbarTitle($this->breadcrumbs);
+            }
         }
     }
 }

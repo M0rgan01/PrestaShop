@@ -184,6 +184,29 @@ class MenuBuilder
         }
     }
 
+    public function getToolbarTitle(array $breadcrumbLinks): string
+    {
+        $toolbarTitle = $breadcrumbLinks['tab']->name;
+        $action = $this->getLegacyAction();
+        switch ($action) {
+            case 'edit':
+                $toolbarTitle = $this->translator->trans('Edit', [], 'Admin.Actions');
+                break;
+
+            case 'add':
+                $toolbarTitle = $this->translator->trans('Add new', [], 'Admin.Actions');
+
+                break;
+
+            case 'view':
+                $toolbarTitle = $this->translator->trans('View', [], 'Admin.Actions');
+
+                break;
+        }
+
+        return $toolbarTitle;
+    }
+
     private function getLegacyAction(): ?string
     {
         $legacyParameters = $this->legacyParametersConverter->getParameters(

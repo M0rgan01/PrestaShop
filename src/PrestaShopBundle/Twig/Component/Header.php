@@ -30,6 +30,7 @@ namespace PrestaShopBundle\Twig\Component;
 
 use Link;
 use Media;
+use PrestaShop\PrestaShop\Adapter\Configuration;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Tools;
 
@@ -40,7 +41,6 @@ class Header
     public ?string $viewport_scale;
     public string $img_dir;
     public string $meta_title;
-    public string $shop_name;
     public bool $display_header_javascript;
 
     public string $controller_name;
@@ -62,6 +62,12 @@ class Header
     public array $js_inline;
     public ?string $displayBackOfficeHeader;
 
+    public function __construct(
+        private readonly Configuration $configuration,
+    ) {
+    }
+
+
     public function getEmployeeToken(): string
     {
         return Tools::getAdminToken('AdminEmployees');
@@ -70,5 +76,10 @@ class Header
     public function getJsDef(): array
     {
         return Media::getJsDef();
+    }
+
+    public function getShopName(): string
+    {
+        return $this->configuration->get('PS_SHOP_NAME');
     }
 }

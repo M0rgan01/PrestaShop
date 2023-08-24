@@ -3,8 +3,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="robots" content="NOFOLLOW, NOINDEX">
 
-<link rel="icon" type="image/x-icon" href="{{ img_dir }}favicon.ico" />
-<link rel="apple-touch-icon" href="{{ img_dir }}app_icon.png" />
+<link rel="icon" type="image/x-icon" href="{{ this.imgDir }}favicon.ico" />
+<link rel="apple-touch-icon" href="{{ this.imgDir }}app_icon.png" />
 
 <title>{% if meta_title %}{{ meta_title }} • {% endif %}{{ this.shopName }}</title>
 
@@ -16,7 +16,7 @@
     var full_language_code = '{{ full_language_code|e('js') }}';
     var full_cldr_language_code = '{{ full_cldr_language_code|e('js') }}';
     var country_iso_code = '{{ country_iso_code|e('js') }}';
-    var _PS_VERSION_ = '{{ ps_version|e('js') }}';
+    var _PS_VERSION_ = '{{ this.psVersion|e('js') }}';
     var roundMode = {{ round_mode|intCast }};
     var youEditFieldFor = '';
     {% if shop_context %}

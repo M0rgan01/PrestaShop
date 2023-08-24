@@ -39,7 +39,6 @@ class Header
 {
     public Link $link;
     public ?string $viewport_scale;
-    public string $img_dir;
     public string $meta_title;
     public bool $display_header_javascript;
     public string $iso_user;
@@ -47,7 +46,6 @@ class Header
     public string $full_language_code;
     public string $full_cldr_language_code;
     public string $country_iso_code;
-    public string $ps_version;
     public string $round_mode;
     public ?string $shop_context;
     public string $token;
@@ -61,6 +59,8 @@ class Header
 
     public function __construct(
         private readonly Configuration $configuration,
+        private readonly string $imgDir,
+        private readonly string $psVersion,
     ) {
     }
 
@@ -83,5 +83,15 @@ class Header
     public function getControllerName(): string
     {
         return htmlentities(Tools::getValue('controller'));
+    }
+
+    public function getImgDir(): string
+    {
+        return $this->imgDir;
+    }
+
+    public function getPsVersion(): string
+    {
+        return $this->psVersion;
     }
 }

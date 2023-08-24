@@ -5,6 +5,7 @@ services:
     autoconfigure: true
     bind:
       $psVersion: !php/const _PS_VERSION_
+      $imgDir: !php/const _PS_IMG_
 
   Twig\Extension\StringLoaderExtension: ~
 

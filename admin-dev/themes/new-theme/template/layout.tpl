@@ -6,7 +6,6 @@
       twig_template="@PrestaShop/Admin/Layout/header.html.twig"
       link=$link
       viewport_scale=(isset($viewport_scale)) ? $viewport_scale : null
-      img_dir=$img_dir
       meta_title=$meta_title
       display_header_javascript=(isset($display_header_javascript)) ? $display_header_javascript : false
       iso_user=$iso_user
@@ -14,7 +13,6 @@
       full_language_code=$full_language_code
       full_cldr_language_code=$full_cldr_language_code
       country_iso_code=$country_iso_code
-      ps_version=$smarty.const._PS_VERSION_
       round_mode=$round_mode
       shop_context=(isset($shop_context)) ? $shop_context : null
       token=$token

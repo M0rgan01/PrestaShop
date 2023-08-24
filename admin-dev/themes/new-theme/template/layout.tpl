@@ -7,7 +7,6 @@
       link=$link
       viewport_scale=(isset($viewport_scale)) ? $viewport_scale : null
       meta_title=$meta_title
-      round_mode=$round_mode
       shop_context=(isset($shop_context)) ? $shop_context : null
       token=$token
       currentIndex=$currentIndex

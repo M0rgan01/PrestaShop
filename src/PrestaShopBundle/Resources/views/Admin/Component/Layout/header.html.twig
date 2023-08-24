@@ -17,7 +17,7 @@
     var full_cldr_language_code = '{{ this.fullCldrLanguageCode|e('js') }}';
     var country_iso_code = '{{ this.countryIsoCode|e('js') }}';
     var _PS_VERSION_ = '{{ this.psVersion|e('js') }}';
-    var roundMode = {{ round_mode|intCast }};
+    var roundMode = {{ this.roundMode|intCast }};
     var youEditFieldFor = '';
     {% if shop_context %}
       {% if shop_context == constant('\Shop::CONTEXT_ALL') %}

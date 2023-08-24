@@ -41,7 +41,6 @@ class Header
     public Link $link;
     public ?string $viewport_scale;
     public string $meta_title;
-    public string $round_mode;
     public ?string $shop_context;
     public string $token;
     public string $currentIndex;
@@ -92,7 +91,7 @@ class Header
 
     public function getDisplayHeaderJavascript(): bool
     {
-        return (bool) Tools::getValue('liteDisplaying');
+        return (bool)Tools::getValue('liteDisplaying');
     }
 
     public function getIsoUser(): string
@@ -118,5 +117,10 @@ class Header
     public function getFullCldrLanguageCode(): string
     {
         return $this->context->getContext()->getCurrentLocale()->getCode();
+    }
+
+    public function getRoundMode(): string
+    {
+        return $this->configuration->get('PS_PRICE_ROUND_MODE');
     }
 }

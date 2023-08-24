@@ -41,9 +41,6 @@ class Header
     public Link $link;
     public ?string $viewport_scale;
     public string $meta_title;
-    public string $lang_is_rtl;
-    public string $full_language_code;
-    public string $full_cldr_language_code;
     public string $round_mode;
     public ?string $shop_context;
     public string $token;
@@ -106,5 +103,20 @@ class Header
     public function getCountryIsoCode(): string
     {
         return $this->context->getContext()->country->iso_code;
+    }
+
+    public function getLangIsRtl(): bool
+    {
+        return $this->context->getLanguage()->isRTL();
+    }
+
+    public function getFullLanguageCode(): string
+    {
+        return $this->context->getLanguage()->getLanguageCode();
+    }
+
+    public function getFullCldrLanguageCode(): string
+    {
+        return $this->context->getContext()->getCurrentLocale()->getCode();
     }
 }

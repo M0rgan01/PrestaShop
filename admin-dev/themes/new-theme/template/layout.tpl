@@ -9,7 +9,6 @@
       img_dir=$img_dir
       meta_title=$meta_title
       display_header_javascript=(isset($display_header_javascript)) ? $display_header_javascript : false
-      controller_name=$controller_name
       iso_user=$iso_user
       lang_is_rtl=$lang_is_rtl
       full_language_code=$full_language_code

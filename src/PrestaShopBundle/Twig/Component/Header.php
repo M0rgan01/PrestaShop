@@ -42,9 +42,6 @@ class Header
     public string $img_dir;
     public string $meta_title;
     public bool $display_header_javascript;
-
-    public string $controller_name;
-
     public string $iso_user;
     public string $lang_is_rtl;
     public string $full_language_code;
@@ -81,5 +78,10 @@ class Header
     public function getShopName(): string
     {
         return $this->configuration->get('PS_SHOP_NAME');
+    }
+
+    public function getControllerName(): string
+    {
+        return htmlentities(Tools::getValue('controller'));
     }
 }

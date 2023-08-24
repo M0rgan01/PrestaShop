@@ -10,7 +10,7 @@
 
 {% if display_header_javascript %}
   <script type="text/javascript">
-    var help_class_name = '{{ controller_name|e('js') }}';
+    var help_class_name = '{{ this.controllerName|e('js') }}';
     var iso_user = '{{ iso_user|e('js') }}';
     var lang_is_rtl = '{{ lang_is_rtl|intCast }}';
     var full_language_code = '{{ full_language_code|e('js') }}';

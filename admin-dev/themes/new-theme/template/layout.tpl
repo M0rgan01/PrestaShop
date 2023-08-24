@@ -7,12 +7,9 @@
       link=$link
       viewport_scale=(isset($viewport_scale)) ? $viewport_scale : null
       meta_title=$meta_title
-      display_header_javascript=(isset($display_header_javascript)) ? $display_header_javascript : false
-      iso_user=$iso_user
       lang_is_rtl=$lang_is_rtl
       full_language_code=$full_language_code
       full_cldr_language_code=$full_cldr_language_code
-      country_iso_code=$country_iso_code
       round_mode=$round_mode
       shop_context=(isset($shop_context)) ? $shop_context : null
       token=$token

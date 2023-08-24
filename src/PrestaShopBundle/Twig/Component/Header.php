@@ -31,6 +31,7 @@ namespace PrestaShopBundle\Twig\Component;
 use Link;
 use Media;
 use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Tools;
 
@@ -40,12 +41,9 @@ class Header
     public Link $link;
     public ?string $viewport_scale;
     public string $meta_title;
-    public bool $display_header_javascript;
-    public string $iso_user;
     public string $lang_is_rtl;
     public string $full_language_code;
     public string $full_cldr_language_code;
-    public string $country_iso_code;
     public string $round_mode;
     public ?string $shop_context;
     public string $token;
@@ -58,12 +56,12 @@ class Header
     public ?string $displayBackOfficeHeader;
 
     public function __construct(
+        private readonly LegacyContext $context,
         private readonly Configuration $configuration,
         private readonly string $imgDir,
         private readonly string $psVersion,
     ) {
     }
-
 
     public function getEmployeeToken(): string
     {
@@ -93,5 +91,20 @@ class Header
     public function getPsVersion(): string
     {
         return $this->psVersion;
+    }
+
+    public function getDisplayHeaderJavascript(): bool
+    {
+        return (bool) Tools::getValue('liteDisplaying');
+    }
+
+    public function getIsoUser(): string
+    {
+        return $this->context->getLanguage()->getIsoCode();
+    }
+
+    public function getCountryIsoCode(): string
+    {
+        return $this->context->getContext()->country->iso_code;
     }
 }

@@ -4,13 +4,9 @@
   {render_template
       smarty_template="header.tpl"
       twig_template="@PrestaShop/Admin/Layout/header.html.twig"
-      link=$link
       viewport_scale=(isset($viewport_scale)) ? $viewport_scale : null
       meta_title=$meta_title
       shop_context=(isset($shop_context)) ? $shop_context : null
-      token=$token
-      currentIndex=$currentIndex
-      default_language=$default_language
       css_files=(isset($css_files)) ? $css_files : []
       js_def=(isset($js_def) && is_array($js_def)) ? $js_def : []
       js_files=(isset($js_files)) ? $js_files : []

@@ -32,19 +32,16 @@ use Link;
 use Media;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShopBundle\Entity\Repository\TabRepository;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Tools;
 
 #[AsTwigComponent(template: '@PrestaShop/Admin/Component/Layout/header.html.twig')]
 class Header
 {
-    public Link $link;
     public ?string $viewport_scale;
     public string $meta_title;
     public ?string $shop_context;
-    public string $token;
-    public string $currentIndex;
-    public string $default_language;
 
     public array $css_files;
     public array $js_files;
@@ -52,6 +49,7 @@ class Header
     public ?string $displayBackOfficeHeader;
 
     public function __construct(
+        private readonly TabRepository $tabRepository,
         private readonly LegacyContext $context,
         private readonly Configuration $configuration,
         private readonly string $imgDir,
@@ -122,5 +120,27 @@ class Header
     public function getRoundMode(): string
     {
         return $this->configuration->get('PS_PRICE_ROUND_MODE');
+    }
+
+    public function getToken(): string
+    {
+        $controllerName = $this->getControllerName();
+        $tabId = $this->tabRepository->getIdByClassName($controllerName);
+        return Tools::getAdminToken($controllerName . $tabId . (int) $this->context->getContext()->employee->id);
+    }
+
+    public function getDefaultLanguage(): int
+    {
+        return $this->configuration->get('PS_LANG_DEFAULT');
+    }
+
+    public function getLink(): ?Link
+    {
+        return $this->context->getContext()->link;
+    }
+
+    public function getCurrentIndex(): string
+    {
+        return $this->context->getContext()->controller::$currentIndex;
     }
 }

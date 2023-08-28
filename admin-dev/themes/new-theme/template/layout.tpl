@@ -4,7 +4,6 @@
   {render_template
       smarty_template="header.tpl"
       twig_template="@PrestaShop/Admin/Layout/header.html.twig"
-      viewport_scale=(isset($viewport_scale)) ? $viewport_scale : null
       meta_title=$meta_title
       shop_context=(isset($shop_context)) ? $shop_context : null
       css_files=(isset($css_files)) ? $css_files : []

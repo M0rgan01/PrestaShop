@@ -39,7 +39,6 @@ use Tools;
 #[AsTwigComponent(template: '@PrestaShop/Admin/Component/Layout/header.html.twig')]
 class Header
 {
-    public ?string $viewport_scale;
     public string $meta_title;
     public ?string $shop_context;
 
@@ -89,7 +88,7 @@ class Header
 
     public function getDisplayHeaderJavascript(): bool
     {
-        return (bool)Tools::getValue('liteDisplaying');
+        return (bool) Tools::getValue('liteDisplaying');
     }
 
     public function getIsoUser(): string

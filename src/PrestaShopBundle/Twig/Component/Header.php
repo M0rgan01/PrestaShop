@@ -51,7 +51,6 @@ class Header
         private readonly TabRepository $tabRepository,
         private readonly LegacyContext $context,
         private readonly Configuration $configuration,
-        private readonly string $imgDir,
         private readonly string $psVersion,
     ) {
     }
@@ -78,7 +77,7 @@ class Header
 
     public function getImgDir(): string
     {
-        return $this->imgDir;
+        return _PS_IMG_;
     }
 
     public function getPsVersion(): string
@@ -125,6 +124,7 @@ class Header
     {
         $controllerName = $this->getControllerName();
         $tabId = $this->tabRepository->getIdByClassName($controllerName);
+
         return Tools::getAdminToken($controllerName . $tabId . (int) $this->context->getContext()->employee->id);
     }
 

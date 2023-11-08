@@ -34,6 +34,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class CountryContextListener
 {
+    use ApiPlatformTrait;
+
     public function __construct(
         private readonly CountryContextBuilder $countryContextBuilder,
         private readonly ConfigurationInterface $configuration
@@ -42,7 +44,7 @@ class CountryContextListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() && $this->isApiRequest($event->getRequest())) {
             return;
         }
 

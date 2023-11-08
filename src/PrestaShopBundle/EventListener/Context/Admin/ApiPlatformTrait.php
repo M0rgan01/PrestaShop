@@ -28,26 +28,16 @@ declare(strict_types=1);
 
 namespace PrestaShopBundle\EventListener\Context\Admin;
 
-use PrestaShop\PrestaShop\Core\ConfigurationInterface;
-use PrestaShop\PrestaShop\Core\Context\CurrencyContextBuilder;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use PrestaShopBundle\Controller\Api\OAuth2\AccessTokenController;
+use Symfony\Component\HttpFoundation\Request;
 
-class CurrencyContextListener
+trait ApiPlatformTrait
 {
-    use ApiPlatformTrait;
-
-    public function __construct(
-        private readonly CurrencyContextBuilder $currencyContextBuilder,
-        private readonly ConfigurationInterface $configuration,
-    ) {
-    }
-
-    public function onKernelRequest(RequestEvent $event): void
+    protected function isApiRequest(Request $request): bool
     {
-        if (!$event->isMainRequest() && $this->isApiRequest($event->getRequest())) {
-            return;
-        }
-
-        $this->currencyContextBuilder->setCurrencyId((int) $this->configuration->get('PS_CURRENCY_DEFAULT'));
+        return in_array(
+            $request->attributes->get('_controller'),
+            [AccessTokenController::class, 'api_platform.action.placeholder']
+        );
     }
 }

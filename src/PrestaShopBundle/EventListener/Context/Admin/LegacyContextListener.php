@@ -45,6 +45,8 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
  */
 class LegacyContextListener
 {
+    use ApiPlatformTrait;
+
     /**
      * @param iterable|LegacyContextBuilderInterface[] $legacyBuilders
      */
@@ -55,7 +57,7 @@ class LegacyContextListener
 
     public function onKernelController(ControllerEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() && $this->isApiRequest($event->getRequest())) {
             return;
         }
 

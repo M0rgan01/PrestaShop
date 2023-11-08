@@ -43,6 +43,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  */
 class ShopContextListener
 {
+    use ApiPlatformTrait;
+
     public function __construct(
         private readonly ShopContextBuilder $shopContextBuilder,
         private readonly EmployeeContext $employeeContext,
@@ -58,7 +60,7 @@ class ShopContextListener
         // either that or the listener itself should be configured in a way so that it only is used in BO context
         // because in FO we don't handle shop context the same way (there can be only one shop and no shop context
         // switching is possible)
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() && $this->isApiRequest($event->getRequest())) {
             return;
         }
 

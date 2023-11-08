@@ -37,6 +37,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  */
 class EmployeeContextListener
 {
+    use ApiPlatformTrait;
+
     public function __construct(
         private readonly EmployeeContextBuilder $employeeContextBuilder,
         private readonly LegacyContext $legacyContext
@@ -45,7 +47,7 @@ class EmployeeContextListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() && $this->isApiRequest($event->getRequest())) {
             return;
         }
 

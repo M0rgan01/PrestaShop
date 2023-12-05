@@ -338,19 +338,7 @@ class LocalizationPackCore
                     true
                 );
 
-                /* @var CurrencyId $currencyId */
-                try {
-                    $currencyId = $commandBus->handle($command);
-                } catch (CurrencyException $e) {
-                    $this->_errors[] = $e->getMessage();
-                    Context::getContext()->getTranslator()->trans(
-                        'An error occurred while importing the currency: %s',
-                        [(string) ($attributes['name'])],
-                        'Admin.International.Notification'
-                    );
-
-                    return false;
-                }
+                $currencyId = $commandBus->handle($command);
 
                 Cache::clear();
 

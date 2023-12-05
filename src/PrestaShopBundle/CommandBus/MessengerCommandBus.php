@@ -51,10 +51,10 @@ final class MessengerCommandBus implements CommandBusInterface
      */
     public function handle($command)
     {
-        try {
+//        try {
             return $this->process($command);
-        } catch (HandlerFailedException $exception) {
-            throw $exception->getPrevious();
-        }
+//        } catch (HandlerFailedException $exception) {
+//            throw $exception->getPrevious();
+//        }
     }
 }

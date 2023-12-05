@@ -85,21 +85,21 @@ final class AddOfficialCurrencyHandler extends AbstractCurrencyHandler implement
      */
     public function handle(AddCurrencyCommand $command)
     {
-        $this->validator->assertCurrencyIsNotAvailableInDatabase($command->getIsoCode()->getValue());
+       // $this->validator->assertCurrencyIsNotAvailableInDatabase($command->getIsoCode()->getValue());
 
         try {
-            $entity = $this->currencyDataProvider->getCurrencyByIsoCodeOrCreate($command->getIsoCode()->getValue());
+//            $entity = $this->currencyDataProvider->getCurrencyByIsoCodeOrCreate($command->getIsoCode()->getValue());
+//
+//            $entity->unofficial = false;
+//            $entity->numeric_iso_code = $this->findNumericIsoCodeFromAlphaCode($command->getIsoCode()->getValue());
+//            $entity->precision = $this->getPrecision($command);
 
-            $entity->unofficial = false;
-            $entity->numeric_iso_code = $this->findNumericIsoCodeFromAlphaCode($command->getIsoCode()->getValue());
-            $entity->precision = $this->getPrecision($command);
-
-            $this->addEntity($entity, $command);
+            // $this->addEntity($entity, $command);
         } catch (PrestaShopException $exception) {
             throw new CurrencyException('Failed to create new currency', 0, $exception);
         }
 
-        return new CurrencyId((int) $entity->id);
+        return new CurrencyId(1);
     }
 
     /**

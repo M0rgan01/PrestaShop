@@ -110,14 +110,7 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
                 $this->processPostInstall();
             }
         } catch (\Exception $e) {
-            if (_PS_MODE_DEV_) {
-                // display stack trace
-                $message = (string) $e;
-            } else {
-                // log stack trace and display message
-                $this->model_install->setError((string) $e);
-                $message = $e->getMessage();
-            }
+            $message = (string) $e;
             $this->ajaxJsonAnswer(false, $message);
         }
 
@@ -209,26 +202,29 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
     public function processConfigureShop()
     {
         $this->initializeContext();
+        try {
+            $success = $this->model_install->configureShop([
+                'shop_name' => $this->session->shop_name,
+                'shop_country' => $this->session->shop_country,
+                'shop_timezone' => $this->session->shop_timezone,
+                'admin_firstname' => $this->session->admin_firstname,
+                'admin_lastname' => $this->session->admin_lastname,
+                'admin_password' => $this->session->admin_password,
+                'admin_email' => $this->session->admin_email,
+                'configuration_agrement' => $this->session->configuration_agrement,
+                'enable_ssl' => $this->session->enable_ssl,
+                'rewrite_engine' => $this->session->rewrite_engine,
+            ]);
 
-        $success = $this->model_install->configureShop([
-            'shop_name' => $this->session->shop_name,
-            'shop_country' => $this->session->shop_country,
-            'shop_timezone' => $this->session->shop_timezone,
-            'admin_firstname' => $this->session->admin_firstname,
-            'admin_lastname' => $this->session->admin_lastname,
-            'admin_password' => $this->session->admin_password,
-            'admin_email' => $this->session->admin_email,
-            'configuration_agrement' => $this->session->configuration_agrement,
-            'enable_ssl' => $this->session->enable_ssl,
-            'rewrite_engine' => $this->session->rewrite_engine,
-        ]);
+            if (!$success || $this->model_install->getErrors()) {
+                $this->ajaxJsonAnswer(false, 'error is here');
+            }
 
-        if (!$success || $this->model_install->getErrors()) {
-            $this->ajaxJsonAnswer(false, $this->model_install->getErrors());
+            $this->session->process_validated = array_merge($this->session->process_validated, ['configureShop' => true]);
+            $this->ajaxJsonAnswer(true);
+        } catch (Exception $e) {
+            $this->ajaxJsonAnswer(false, 'error is here');
         }
-
-        $this->session->process_validated = array_merge($this->session->process_validated, ['configureShop' => true]);
-        $this->ajaxJsonAnswer(true);
     }
 
     /**

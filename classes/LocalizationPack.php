@@ -26,8 +26,6 @@
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use PrestaShop\PrestaShop\Core\Addon\Module\ModuleManagerBuilder;
 use PrestaShop\PrestaShop\Core\Domain\Currency\Command\AddCurrencyCommand;
-use PrestaShop\PrestaShop\Core\Domain\Currency\Exception\CurrencyException;
-use PrestaShop\PrestaShop\Core\Domain\Currency\ValueObject\CurrencyId;
 use PrestaShop\PrestaShop\Core\Localization\CLDR\LocaleRepository;
 
 class LocalizationPackCore
@@ -338,9 +336,13 @@ class LocalizationPackCore
                     true
                 );
 
-                $currencyId = $commandBus->handle($command);
+                if (null === $commandBus) {
+                    throw new PrestaShopException('Null command bus');
+                } else {
+                    $currencyId = $commandBus->handle($command);
+                }
 
-                Cache::clear();
+                // Cache::clear();
 
                 // PaymentModule::addCurrencyPermissions($currencyId->getValue());
             }

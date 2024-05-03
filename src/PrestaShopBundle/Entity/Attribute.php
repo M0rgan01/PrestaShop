@@ -58,7 +58,7 @@ class Attribute
     private AttributeGroup $attributeGroup;
 
     /**
-     * @ORM\Column(name="color", type="string", length=32)
+     * @ORM\Column(name="color", type="string", length=352)
      */
     private string $color;
 

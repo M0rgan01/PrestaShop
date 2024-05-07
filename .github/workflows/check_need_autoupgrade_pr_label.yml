@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ format('github.event.pull_request.{0}.ref', matrix.branch) }}
+          ref: ${{ matrix.branch == 'base' && github.event.pull_request.base.ref || github.event.pull_request.head.ref }}
 
       - name: Docker build
         run: docker compose build prestashop-git

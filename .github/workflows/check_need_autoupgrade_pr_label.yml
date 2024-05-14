@@ -15,8 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: ${{ matrix.branch == 'head' && '0' || '1' }}
           ref: ${{ matrix.branch == 'base' && github.event.pull_request.base.ref || github.event.pull_request.head.ref }}
           repository: ${{ matrix.branch == 'base' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+
+
+      - name: Rebase head
+        if: ${{ matrix.branch == 'head' }}
+        run: |
+          git remote add upstream ${{ github.event.pull_request.base.repo.clone_url }};
+          git fetch upstream ${{ github.event.pull_request.base.ref }};
+          git rebase upstream/${{ github.event.pull_request.base.ref }};
 
       - name: Docker build
         run: docker compose build prestashop-git

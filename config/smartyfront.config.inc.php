@@ -55,6 +55,8 @@ smartyRegisterFunction($smarty, 'function', 'render', 'smartyRender');
 smartyRegisterFunction($smarty, 'function', 'form_field', 'smartyFormField');
 smartyRegisterFunction($smarty, 'block', 'widget_block', 'smartyWidgetBlock');
 
+applyNofilterModifiers($smarty);
+
 function withWidget($params, callable $cb, $smarty)
 {
     // Check if name was provided
@@ -320,4 +322,51 @@ function smartyTranslate($params, $smarty)
     }
 
     return Translate::postProcessTranslation($params['js'] ? $msg : Tools::safeOutput($msg), $params);
+}
+
+/**
+ * This function processes `nofilter` tags in Smarty templates.
+ * - If a `nofilter|unsecure` tag is found, it removes `|unsecure` and leaves `nofilter`.
+ * - If a `nofilter` tag is found without `|unsecure`, it adds the `safe_nofilter` modifier to it.
+ *
+ * @param Smarty $smarty
+ *
+ * @return void
+ * @throws SmartyException
+ */
+function applyNofilterModifiers($smarty)
+{
+    $smarty->registerFilter('pre', function ($template_source, Smarty_Internal_Template $template) {
+        $replaced = false;
+
+        $template_source = preg_replace_callback(
+            '/\{\$([^\s|}]+)\s+nofilter\|unsecure([^}]*)}/',
+            function ($matches) use (&$replaced) {
+                $replaced = true;
+                return sprintf('{$%s nofilter%s}', $matches[1], $matches[2]);
+            },
+            $template_source
+        );
+
+        if ($replaced) {
+            return $template_source;
+        }
+
+        return preg_replace_callback(
+            '/\{\$([^\s|}]+)\s+nofilter([^}]*)}/',
+            function ($matches) {
+                return sprintf('{$%s|safe_nofilter nofilter%s}', $matches[1], $matches[2]);
+            },
+            $template_source
+        );
+    });
+    $smarty->registerPlugin('modifier', 'safe_nofilter', function ($content) {
+        if (Validate::isCleanHtml($content)) {
+            return $content;
+        }
+        return '';
+    });
+    $smarty->registerPlugin('modifier', 'unsecure', function ($content) {
+        return $content;
+    });
 }

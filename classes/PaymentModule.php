@@ -1348,8 +1348,18 @@ abstract class PaymentModuleCore extends Module
 
         /** @var OrderShipmentCreator $orderShipmentCreator */
         $orderShipmentCreator = $this->get('PrestaShop\PrestaShop\Adapter\Shipment\OrderShipmentCreator');
+        $physicalProductsByCarrier = [];
 
-        $orderShipmentCreator->addShipmentOrder($order, $productsByCarrier);
+        foreach ($productsByCarrier as $carrierId => $products) {
+            $filteredProducts = array_filter($products['product_list'], function (array $product) {
+                return !$product['is_virtual'];
+            });
+
+            if (!empty($filteredProducts)) {
+                $physicalProductsByCarrier[$carrierId]['product_list'] = array_values($filteredProducts);
+            }
+        }
+        $orderShipmentCreator->addShipmentOrder($order, $physicalProductsByCarrier);
     }
 
     private function isFeatureFlagIsEnabledForMultiShipment()

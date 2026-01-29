@@ -1361,6 +1361,24 @@ class OrderController extends PrestaShopAdminController
         ]);
     }
 
+    #[AdminSecurity("is_granted('update', 'AdminOrders')", redirectRoute: 'admin_orders_view', redirectQueryParamsToKeep: ['orderId'], message: 'You do not have permission to edit this.')]
+    public function getUpdateProductForm(int $orderId): Response
+    {
+        $orderForViewing = $this->dispatchQuery(new GetOrderForViewing($orderId, QuerySorting::DESC));
+        $currency = Currency::getCurrency($orderForViewing->getCurrencyId());
+
+        $form = $this->createForm(EditProductRowType::class, [], [
+            'order_id' => $orderId,
+            'symbol' => $currency->symbol,
+        ]);
+
+        return $this->render('@PrestaShop/Admin/Sell/Order/Order/Blocks/View/add_product_form.html.twig', [
+            'addProductForm' => $form->createView(),
+            'orderForViewing' => $orderForViewing,
+            'orderId' => $orderId,
+        ]);
+    }
+
     /**
      * @param int $orderId
      * @param int $orderDetailId

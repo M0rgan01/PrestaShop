@@ -139,6 +139,11 @@ if [ ! -f ./app/config/parameters.php ]; then
             export PS_DOMAIN=$(hostname -i)
         fi
 
+        if [ "$PS_FOLDER_ADMIN" != "admin-dev" ] && [ -d ./admin-dev ] && [ ! -d "./$PS_FOLDER_ADMIN" ]; then
+            echo "\n* Renaming admin folder as $PS_FOLDER_ADMIN ...";
+            mv ./admin-dev "./$PS_FOLDER_ADMIN"
+        fi
+
         echo "\n* Launching the installer script..."
         runuser -g www-data -u www-data -- php /var/www/html/$PS_FOLDER_INSTALL/index_cli.php \
         --domain="$PS_DOMAIN" --db_server=$DB_SERVER:$DB_PORT --db_name="$DB_NAME" --db_user=$DB_USER \
@@ -185,7 +190,7 @@ fi
 echo "\n***"
 echo "**"
 echo "** Front-office: http://${PS_DOMAIN}/"
-echo "**  Back-office: http://${PS_DOMAIN}/admin-dev"
+echo "**  Back-office: http://${PS_DOMAIN}/${PS_FOLDER_ADMIN}"
 echo "**   Login with:"
 echo "**     username: ${ADMIN_MAIL}"
 echo "**     password: ${ADMIN_PASSWD}"

@@ -1217,7 +1217,15 @@ class Install extends AbstractInstall
 
     public function finalize(?string $randomizedAdminFolderName = null): bool
     {
-        $adminFolder = 'admin-dev';
+        // The admin folder may already have been renamed by an external process (e.g. the
+        // official Docker image renames it according to the PS_FOLDER_ADMIN env var before
+        // running the CLI install), in which case neither $randomizedAdminFolderName nor the
+        // legacy 'admin/' folder below give us its real name. Fall back to the name the kernel
+        // itself auto-detected on disk instead of blindly assuming 'admin-dev'.
+        $container = SymfonyContainer::getInstance();
+        $adminFolder = $container && $container->hasParameter('prestashop.admin_folder_name')
+            ? $container->getParameter('prestashop.admin_folder_name')
+            : 'admin-dev';
 
         // If we need, we generate a random name for admin folder (for security purpose!)
         if (file_exists(_PS_ROOT_DIR_ . '/admin/')) {
